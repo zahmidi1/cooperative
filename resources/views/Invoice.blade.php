@@ -67,9 +67,10 @@
             <li class="breadcrumb-item"><a href="javascript:void(0)">Blank</a></li>
         </ol>
     </div>
+
     <div class="row">
         <div class="col-lg-12">
-            {{ $total = 0, $id_client = 0 }}
+
             <div class="card mt-3">
                 <div class="card-header"> Invoice <strong>01/01/01/2018</strong> <span class="float-end">
                         <strong>Status:</strong> Pending</span> </div>
@@ -99,10 +100,16 @@
                                 </tr>
                             </thead>
                             <tbody>
-
+                                {{ $total = 0, $id_client = 0, $date_py = 0 }}
                                 @foreach ($milk_reception as $reception)
                                     <tr>
-                                        <td>{{ $reception->created_at }}</td>
+
+                                        <td>
+
+                                            @php $date_py= $reception->created_at @endphp
+                                            {{ $reception->created_at }}
+                                        </td>
+
                                         @php
                                             $id_client = $reception->id_client;
                                         @endphp
@@ -141,7 +148,7 @@
                             <div class="col-12">
 
                                 <h6>To:</h6> N client : 00{{ $id_client }}
-                                <h6></h6>
+                                <h6>{{ $date_py }}</h6>
                                 <h6> cache de coperative </h6>
                             </div>
 

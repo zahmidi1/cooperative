@@ -30,7 +30,7 @@ Route::post('/milk_reception/store', [App\Http\Controllers\MilkReceptionControll
 Route::get('/milk_reception', [App\Http\Controllers\MilkReceptionController::class, 'index'])->name('milk_reception');
 
 //  invoice
-Route::get('/invoice/{id}', [App\Http\Controllers\InvoiceController::class, 'index'])->name('invoice');
+Route::get('/invoice/{id}&{date_py}', [App\Http\Controllers\InvoiceController::class, 'index'])->name('invoice');
 
 
 

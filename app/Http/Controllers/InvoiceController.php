@@ -27,20 +27,17 @@ class InvoiceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id)
+    public function index($id, $date_py)
     {
-        $r = clients::find($id)
-            ->get();
 
 
         //Invoice.blade
         return view('Invoice')->with([
-            "clients" => $r,
 
             "milk_reception" => milk_reception::where('date_payment', null)
                 ->where('id_client', $id)
                 ->orderBy('created_at', 'asc')
-                ->whereRaw('created_at >=DATE_ADD(NOW(), INTERVAL -15 DAY)')
+                ->whereRaw("created_at <= DATE_ADD('$date_py' , INTERVAL 16 DAY)")
                 ->get()
 
 

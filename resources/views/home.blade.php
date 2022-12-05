@@ -56,7 +56,18 @@
 @endsection
 
 @section('content')
-    hiiiiiiiiiiiiiiii
+    <div class="row">
+        <div class="col-sm">
+
+        </div>
+        <div class="col-sm-7">
+
+        </div>
+        <div class="col-sm">
+            <!-- Button ajouter lait include et modal -->
+            @include('include.ajouterLait')
+        </div>
+    </div>
 @endsection
 
 @section('secript')

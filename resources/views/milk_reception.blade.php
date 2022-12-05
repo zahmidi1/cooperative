@@ -59,6 +59,20 @@
 
 
 @section('content')
+    <div class="row">
+        <div class="col-sm">
+
+        </div>
+        <div class="col-sm-7">
+
+        </div>
+        <div class="col-sm">
+            <!-- Button ajouter lait include et modal -->
+            @include('include.ajouterLait')
+        </div>
+    </div>
+
+
     <table id="example5" class="display" style="min-width: 845px; min-height: 50%;">
         <thead>
             <tr>

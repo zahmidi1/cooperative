@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('cin')->unique();
             $table->string('adress');
             $table->string('telefone')->unique();
+            $table->string('date_pyment')->nullable();
             $table->timestamps();
         });
     }

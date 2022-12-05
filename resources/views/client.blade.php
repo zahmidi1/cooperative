@@ -113,7 +113,8 @@
                         <td>{{ $client->telefone }}</td>
 
                         <td>
-                            <a href="invoice/{{ $client->id }}" class="badge badge-secondary">factur</a>
+                            <a href="invoice/{{ $client->id }}&{{ $client->date_pyment }}"
+                                class="badge badge-secondary">factur</a>
                             <a href="client/show/{{ $client->id }}" class="badge badge-success">reception de lait</a>
                         </td>
 
