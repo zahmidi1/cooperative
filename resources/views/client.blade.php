@@ -57,12 +57,25 @@
 
 
 
-
 @section('content')
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-        Ajouter une client
-    </button>
+    <div class="row page-titles">
+        <ol class="breadcrumb">
+            <div class="row">
+                <div class="col-sm">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ajouter_client">
+                        Ajouter client <i class="fa fa-plus color-info"></i>
+                    </button>
+                </div>
+                <div class="col-sm">
+                    <!-- Button ajouter lait include et modal -->
+                    @include('include.ajouterLait')
+                </div>
+            </div>
+        </ol>
+    </div>
+
+
 
     <div class="table-responsive">
         <table id="example5" class="display" style="min-width: 845px; min-height: 50%;">
@@ -115,7 +128,7 @@
 
 
     <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="ajouter_client" tabindex="-1" aria-labelledby="ajouter_client" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -181,6 +194,11 @@
     </div>
 @endsection
 
+
+
+
+
+
 @section('secript')
     @if (session('status'))
         <script>
@@ -190,7 +208,6 @@
                 debug: !1,
                 newestOnTop: !0,
                 progressBar: !0,
-
                 preventDuplicates: !0,
                 onclick: null,
                 showDuration: "300",

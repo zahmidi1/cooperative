@@ -1,3 +1,4 @@
+-- Active: 1668798109261@@127.0.0.1@3306@u382855380_coperative
 <?php
 
 namespace App\Http\Controllers;
@@ -107,7 +108,6 @@ class ClientsController extends Controller
         $client =  clients::find($id);
         return view('client')->with([
             "clients" =>  $client
-
         ]);
     }
 
