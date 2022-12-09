@@ -7,7 +7,7 @@
 
 
 @section('nav')
-    <li class="mm-active"><a href="/" class="ai-icon  mm-active" aria-expanded="false">
+    <li class="mm-active"><a href="/dashboard" class="ai-icon  mm-active" aria-expanded="false">
             <i class="flaticon-025-dashboard"></i>
             <span class="nav-text">Dashboard</span>
         </a>

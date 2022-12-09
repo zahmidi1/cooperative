@@ -18,20 +18,23 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/', [App\Http\Controllers\WebsiteController::class, 'index'])->name('site.home');
 Auth::routes();
 
 // clients
 Route::get('/client', [App\Http\Controllers\ClientsController::class, 'index'])->name('client');
 Route::post('/client/store', [App\Http\Controllers\ClientsController::class, 'store'])->name('client_store');
 Route::get('/client/show/{id}', [App\Http\Controllers\ClientsController::class, 'show'])->name('client_show');
+
+
 // milk_reception
 Route::post('/milk_reception/store', [App\Http\Controllers\MilkReceptionController::class, 'store'])->name('milk_store');
 Route::get('/milk_reception', [App\Http\Controllers\MilkReceptionController::class, 'index'])->name('milk_reception');
 
 //  invoice
-Route::get('/invoice/{id}&{date_py}', [App\Http\Controllers\InvoiceController::class, 'index'])->name('invoice');
-
+Route::post('/invoice/', [App\Http\Controllers\InvoiceController::class, 'index'])->name('invoice');
+Route::put('/enregistrer', [App\Http\Controllers\InvoiceController::class, 'create'])->name('enregistrer');
 
 
 

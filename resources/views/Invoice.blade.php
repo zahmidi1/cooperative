@@ -7,7 +7,7 @@
 
 
 @section('nav')
-    <li><a href="/" class="ai-icon" aria-expanded="false">
+    <li><a href="/dashboard" class="ai-icon" aria-expanded="false">
             <i class="flaticon-025-dashboard"></i>
             <span class="nav-text">Dashboard</span>
         </a>
@@ -73,10 +73,10 @@
 
             <div class="card mt-3">
                 <div class="card-header"> Invoice <strong>01/01/01/2018</strong> <span class="float-end">
-                        <strong>Status:</strong> Pending</span> </div>
+                        <strong>Status:</strong> </span> </div>
                 <div class="card-body">
                     <div class="row mb-5">
-                        <div class="mt-4 col-6">
+                        <div class="mt-4 col-8">
                             <h6>From:</h6>
                             <div> <strong>Annassim al akhedar</strong> </div>
                             <div>coopérative laitière</div>
@@ -84,76 +84,53 @@
                             <div>Email: info@anassimalakhar.com</div>
                             <div>Phone: +212 618181155</div>
                         </div>
+                        <div class="mt-4 col-4" id="">
+
+                            <h6>â:</h6>
+                            <div>N client : <span>00{{ $id_client }}</span></div>
+                            <div>nome et prenome : <strong id="nameCLI"></strong> </div>
+                            <div>CIN : <span id="cin"></span></div>
+                            <div>address : <span id="adress"></span></div>
+                            <div>Phone :<span id="telefone"></span> </div>
+                        </div>
                     </div>
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
                                 <tr>
-
                                     <th>date</th>
-
-
                                     <th>period</th>
                                     <th>quantity</th>
-
-
                                 </tr>
                             </thead>
                             <tbody>
-                                {{ $total = 0, $id_client = 0, $date_py = 0 }}
+                                {{ $nameCLI = 0, $adress = 0, $telefone = 0, $quantity = 0 }}
                                 @foreach ($milk_reception as $reception)
                                     <tr>
 
-                                        <td>
-
-                                            @php $date_py= $reception->created_at @endphp
-                                            {{ $reception->created_at }}
-                                        </td>
-
-                                        @php
-                                            $id_client = $reception->id_client;
-                                        @endphp
-
+                                        <td>{{ $reception->created_at }}</td>
                                         <td>{{ $reception->period }}</td>
+                                        <td>{{ $reception->quantity }} L</td>
 
-                                        <td>{{ $reception->quantity }}L</td>
 
 
-                                        @php
-                                            $total = $total + $reception->quantity;
-                                        @endphp
-
+                                        @php  $nameCLI = $reception->nameCLI @endphp
+                                        @php $cin = $reception->cin @endphp
+                                        @php $adress = $reception->adress @endphp
+                                        @php $telefone = $reception->telefone @endphp
+                                        @php  $quantity += $reception->quantity @endphp
                                     </tr>
                                 @endforeach
-                                {{-- @foreach ($jours as $jour)
-                                                <tr>
-                                                    <td>{{ $jour->created_at }}</td>
-                            <td>{{ $total = $jour->lait_matin }}</td>
-                            <td>{{ $jour->lait_soir }}</td>
-                            <td>{{ $jour->lait_total }}</td>
-                            <td>{{ $jour->alf_kg }}</td>
-                            </tr>
-                            @endforeach --}}
-
-
-
-
                             </tbody>
                         </table>
                     </div>
                     <div class="row">
                         <div class="col-lg-4 col-sm-5">
-
-
                             <div class="col-12">
-
-                                <h6>To:</h6> N client : 00{{ $id_client }}
-                                <h6>{{ $date_py }}</h6>
+                                <h6> N client: 00{{ $id_client }}</h6>
+                                <h6></h6>
                                 <h6> cache de coperative </h6>
                             </div>
-
-
-
                         </div>
                         <div class="col-lg-4 col-sm-5 ms-auto">
                             <div class="table-responsive">
@@ -161,19 +138,16 @@
                                     <tbody>
                                         <tr>
                                             <td class="left"><strong>Totale lait</strong></td>
-                                            <td class="right">{{ $total }}</td>
+                                            <td class="right">{{ $quantity }}</td>
                                         </tr>
-
                                         <tr>
-                                            <td class="left"><strong>prix de lait)</strong></td>
-                                            <td class="right"><input type="number" name="prix_lait" id="prix_lait"
-                                                    value="{{ $prix = 3.4 }}">DH</td>
+                                            <td class="left"><strong>prix de lait :</strong></td>
+                                            <td class="right">{{ $prix }}DH</td>
                                         </tr>
-
                                         <tr>
                                             <td class="left"><strong>Total</strong></td>
-                                            <td class="right"><strong>{{ $total }}x{{ $prix }}</strong><br>
-                                                <strong>{{ $total * $prix }} DH</strong>
+                                            <td class="right"><strong>{{ $quantity }}x{{ $prix }}</strong><br>
+                                                <strong>{{ $quantity * $prix }} DH</strong>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -182,6 +156,43 @@
                             </div>
                         </div>
                     </div>
+                    <form action="{{ route('enregistrer') }}" method="post">
+                        @csrf
+                        @method('PUT')
+                        <div class="row">
+                            <input type="hidden" id="id_client" name="id_client" class="form-control"
+                                value="{{ $id_client }}">
+                            <input type="hidden" name="id_user" value="{{ Auth::user()->id }}">
+                            <input type="hidden" id="debu" name="debu" class="form-control"
+                                value="{{ $debu }}">
+                            <input type="hidden" id="fin" name="fin" class="form-control"
+                                value="{{ $fin }}">
+                            <input type="hidden" id="prix" name="prix" class="form-control"
+                                value="{{ $prix }}">
+                            <input type="hidden" id="qantiter" name="qantiter" class="form-control"
+                                value="{{ $quantity }}">
+                            <input type="hidden" id="total" name="total" class="form-control"
+                                value="{{ $quantity * $prix }}">
+                            <div class="col-6 mb-3">
+                                <label for="name" class="form-label">DATE DE PAYMENT</label>
+                                <input type="date" id="date_payment" name="date_payment" class="form-control">
+                                <span class="text-danger">
+                                    @error('date_payment')
+                                        {{ $message }}
+                                    @enderror
+                                </span>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary"> enregistrer la facture </button>
+                                    <a type="button" class="btn btn-secondary" href="/client">annullé</a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+
+
                 </div>
             </div>
         </div>
@@ -193,10 +204,23 @@
     <script src="vendor/jquery-smartwizard/dist/js/jquery.smartWizard.js"></script>
     <script src="vendor/jquery-nice-select/js/jquery.nice-select.min.js"></script>
 
+
+
     <script>
+        var nameCLI = "{{ $nameCLI }}"
+
+        var cin = "{{ $cin }}"
+        var adress = "{{ $adress }}"
+        var adress = "{{ $telefone }}"
         $(document).ready(function() {
             // SmartWizard initialize
             $('#smartwizard').smartWizard();
+
+            $("#nameCLI").append(nameCLI);
+            $("#cin").append(cin);
+            $("#adress").append(adress);
+            $("#telefone").append(telefone);
+
         });
     </script>
 @endsection

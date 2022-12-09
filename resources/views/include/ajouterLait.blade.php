@@ -18,7 +18,7 @@
 
                            <select class="form-select" id="id_user" name="id_user"
                                aria-label="Default select example">
-                               <option selected value="{{ Auth::user()->id }}">{{ Auth::user()->name }}
+                               <option selected value="{{ Auth::user()->id }}">{{ Auth::user()->nameUSE }}
                                </option>
                            </select>
 
@@ -29,7 +29,7 @@
                                aria-label="Default select example">
                                <option>shoisi une clinet</option>
                                @foreach ($clients as $client)
-                                   <option value="{{ $client->id }}">{{ $client->name }}</option>
+                                   <option value="{{ $client->id }}">{{ $client->nameCLI }}</option>
                                @endforeach
 
                            </select>

@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class milk_reception extends Model
 {
     use HasFactory;
+
+    protected  $fillable = ['date_payment'];
 }

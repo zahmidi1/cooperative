@@ -71,7 +71,7 @@ class ClientsController extends Controller
 
         $client = new clients();
 
-        $client->name = $request->input('name');
+        $client->nameCLI = $request->input('name');
         $client->cin = $request->input('cin');
         $client->adress = $request->input('adress');
         $client->telefone = $request->input('telefone');
@@ -88,10 +88,15 @@ class ClientsController extends Controller
     public function show(clients $id)
     {
 
-        $reception =  milk_reception::where('id_client', $id->id)->get();
+
         return view('milk_reception')->with([
-            "milk_reception" =>  $reception,
-            "clients" =>  clients::all(),
+            "milk_receptions" => DB::table('milk_receptions')
+                ->where('id_client', $id->id)
+                ->join('clients', 'milk_receptions.id_client', '=', 'clients.id')
+                ->join('users', 'milk_receptions.id_user', '=', 'users.id')
+                ->select('milk_receptions.*', 'clients.nameCLI', 'clients.id', 'clients.cin', 'clients.adress', 'clients.telefone', 'users.nameUSE')
+                ->get()
+
         ]);
     }
 
@@ -121,7 +126,7 @@ class ClientsController extends Controller
     {
         $client =  clients::find($id);
 
-        $client->name = $request->input('name');
+        $client->nameCLI = $request->input('name');
         $client->cin = $request->input('cin');
         $client->adress = $request->input('adress');
         $client->telefone = $request->input('telefone');

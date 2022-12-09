@@ -7,7 +7,7 @@
 
 
 @section('nav')
-    <li><a href="/" class="ai-icon" aria-expanded="false">
+    <li><a href="/dashboard" class="ai-icon" aria-expanded="false">
             <i class="flaticon-025-dashboard"></i>
             <span class="nav-text">Dashboard</span>
         </a>
@@ -56,24 +56,24 @@
 @endsection
 
 
-
 @section('content')
     <!-- Button trigger modal -->
-    <div class="row page-titles">
-        <ol class="breadcrumb">
-            <div class="row">
-                <div class="col-sm">
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ajouter_client">
-                        Ajouter client <i class="fa fa-plus color-info"></i>
-                    </button>
-                </div>
-                <div class="col-sm">
-                    <!-- Button ajouter lait include et modal -->
-                    @include('include.ajouterLait')
-                </div>
-            </div>
-        </ol>
+
+    <div class="row">
+        <div class="col-sm">
+            <button type="button" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#ajouter_client">
+                Ajouter client <i class="fa fa-plus color-info"></i>
+            </button>
+        </div>
+        <div class="col-sm-7">
+
+        </div>
+        <div class="col-sm">
+            <!-- Button ajouter lait include et modal -->
+            @include('include.ajouterLait')
+        </div>
     </div>
+
 
 
 
@@ -107,17 +107,15 @@
                             </div>
                         </td>
                         <td>00{{ $client->id }}</td>
-                        <td>{{ $client->name }}</td>
+                        <td>{{ $client->nameCLI }}</td>
                         <td>{{ $client->cin }}</td>
                         <td>{{ $client->adress }}</td>
                         <td>{{ $client->telefone }}</td>
-
                         <td>
                             <a href="invoice/{{ $client->id }}&{{ $client->date_pyment }}"
                                 class="badge badge-secondary">factur</a>
                             <a href="client/show/{{ $client->id }}" class="badge badge-success">reception de lait</a>
                         </td>
-
                     </tr>
                 @endforeach
             </tbody>
