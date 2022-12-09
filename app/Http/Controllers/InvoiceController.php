@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreclientsRequest;
 use App\Http\Requests\StoreinvoiceRequest;
 use App\Http\Requests\UpdateinvoiceRequest;
 use App\Models\clients;
 use App\Models\invoice;
 use App\Models\milk_reception;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\DB;
 
 class InvoiceController extends Controller
 {
@@ -27,21 +30,27 @@ class InvoiceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id, $date_py)
+    public function index(StoreclientsRequest $request)
     {
+        $data = [
+            'milk_reception'  =>
+            DB::table('milk_receptions')
+                ->where('id_client', $request->id_cli)
+                ->orderBy('created_at', 'ASC')
+                ->whereBetween('milk_receptions.created_at', [$request->debu, $request->fin])
+                ->join('clients', 'milk_receptions.id_client', '=', 'clients.id')
+                ->select('milk_receptions.*', 'clients.id', 'clients.nameCLI', 'clients.cin', 'clients.adress', 'clients.telefone')
+                ->get(),
+            'prix'   => $request->prix,
+            'id_client' =>  $request->id_cli,
+            'debu' =>  $request->debu,
+            'fin' =>  $request->fin,
 
+
+        ];
 
         //Invoice.blade
-        return view('Invoice')->with([
-
-            "milk_reception" => milk_reception::where('date_payment', null)
-                ->where('id_client', $id)
-                ->orderBy('created_at', 'asc')
-                ->whereRaw("created_at <= DATE_ADD('$date_py' , INTERVAL 16 DAY)")
-                ->get()
-
-
-        ]);
+        return view('Invoice')->with($data);
     }
 
     /**
@@ -49,9 +58,31 @@ class InvoiceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(StoreclientsRequest  $request)
     {
-        //
+        $request->validate([
+            'date_payment' => 'required|min:5|max:25'
+        ]);
+        $invoice = new invoice();
+        $invoice->id_client = $request->input('id_client');
+        $invoice->id_user = $request->input('id_user');
+        $invoice->debu = $request->input('debu');
+        $invoice->fin = $request->input('fin');
+        $invoice->prix = $request->input('prix');
+        $invoice->qantiter = $request->input('qantiter');
+        $invoice->total = $request->input('total');
+        $invoice->date_payment = $request->input('date_payment');
+        $invoice->save();
+
+        $data = milk_reception::where('id_client', $request->input('id_client'))
+            ->orderBy('created_at', 'ASC')
+            ->whereBetween('milk_receptions.created_at', [$request->input('debu'), $request->input('fin')])
+            ->get();
+        foreach ($data as $gg) {
+            $gg->update(['date_payment' => $request->input('date_payment')]);
+            $gg->push();
+        }
+        return redirect("/client/")->with('status', 'insertion réussie');
     }
 
     /**
@@ -62,7 +93,6 @@ class InvoiceController extends Controller
      */
     public function store(StoreinvoiceRequest $request)
     {
-        //
     }
 
     /**
@@ -73,25 +103,6 @@ class InvoiceController extends Controller
      */
     public function show(invoice $invoice)
     {
-        $invoice->validate([
-
-            'name' => 'required|min:5|max:25',
-            'cin' => 'required|min:3|max:9',
-            'adress' => 'required|max:250',
-            'telefone' => 'required|max:10'
-        ]);
-
-
-
-
-        $client = new clients();
-
-        $client->name = $invoice->input('name');
-        $client->cin = $invoice->input('cin');
-        $client->adress = $invoice->input('adress');
-        $client->telefone = $invoice->input('telefone');
-        $client->save();
-        return redirect('/client')->with('status', 'insertion réussie');
     }
 
     /**
@@ -114,7 +125,6 @@ class InvoiceController extends Controller
      */
     public function update(UpdateinvoiceRequest $request, invoice $invoice)
     {
-        //
     }
 
     /**

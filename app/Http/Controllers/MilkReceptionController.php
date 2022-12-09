@@ -128,7 +128,9 @@ class MilkReceptionController extends Controller
      */
     public function update(Updatemilk_receptionRequest $request, milk_reception $milk_reception)
     {
-        //
+        // 
+
+
     }
 
     /**
